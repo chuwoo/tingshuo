@@ -26,23 +26,10 @@ public class UdpSend extends Thread {
     //private String msg;
     public UdpSend(String data,DatagramSocket ds)  {
 
-//        DatagramSocket ds= null;
-//        try {
-//            ds = new DatagramSocket();
-//        } catch (SocketException e) {
-//            e.printStackTrace();
-//        }
-//        this.socket=ds;
-//        //this.ip=InetAddress.getByName("54.200.165.24");
-//        InetSocketAddress isa=new InetSocketAddress("106.75.77.104",61094);
-//        ip=isa.getAddress();
+
             this.data=data;
             this.socket=ds;
-//        this.socket=socket;
-//
-//        port= 61094;
-//        //obj=new JSONObject();
-//        //this.msg=msg;
+
 
     }
     //public static String resule;
@@ -51,8 +38,8 @@ public class UdpSend extends Thread {
 
 
             DatagramSocket ds = new DatagramSocket();
-            InetAddress ip = InetAddress.getByName("106.75.77.104");
-            DatagramPacket dp = new DatagramPacket(data.getBytes(), data.getBytes().length, ip, 61094);
+            InetAddress ip = InetAddress.getByName("192.168.99.242");
+            DatagramPacket dp = new DatagramPacket(data.getBytes(), data.getBytes().length, ip, 8124);
             socket.send(dp);
         }catch (Exception e){
             e.printStackTrace();
