@@ -12,6 +12,8 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.LinkedList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by ASUS on 2017/1/22.
@@ -24,35 +26,25 @@ public class AudRec2 extends Thread {
     private short []     m_in_bytes ;
     private byte []     m_in_bytes1 ;
     private boolean     m_keep_running ;
+    private  final Timer time=new Timer();
+    private  TimerTask task;
     //private  String ipAdd;
     //private int dk;
 
     private DatagramSocket ds;
-    //private JSONObject obj;
-    //ObjectOutputStream oos =null;
-    //private UdpSend us;
+
     AudRec2(DatagramSocket ds) {
         //System.out.println("测试1");
         this.ds=ds;
 
 
 
-        //us=new UdpSend(ds);
-        m_keep_running = true ;
-        //this.ipAdd="162.254.7.164";
-        //this.dk =8214;
 
-        //System.out.println("s1");
-       /* try {
-			//s = new Socket(ipAdd,dk,null,4777);
-			oos = new ObjectOutputStream(new BufferedOutputStream(s.getOutputStream()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+        m_keep_running = true ;
+
     }
 
-    public void init(LinkedList data_q) {
+    public void init() {
         //m_in_q = data_q ;
         m_in_buf_size = android.media.AudioRecord.getMinBufferSize(8000,
                 AudioFormat.CHANNEL_CONFIGURATION_MONO,
@@ -68,6 +60,14 @@ public class AudRec2 extends Thread {
         m_in_bytes1 = new byte[m_in_buf_size];
         //System.out.println(data_q);
         //m_keep_running = true ;
+        task= new TimerTask() {
+            @Override
+            public void run() {
+                MyService.index=1;
+                time.cancel();
+            }
+        };
+        time.schedule(task,5000);
         System.out.println("s2");
     }
 
@@ -87,8 +87,8 @@ public class AudRec2 extends Thread {
             try {
 
 
-                InetAddress ip = InetAddress.getByName("106.75.77.104");
-                DatagramPacket dp=new DatagramPacket(m_in_bytes1,m_in_bytes1.length,ip,61094);
+                InetAddress ip = InetAddress.getByName("192.168.99.242");
+                DatagramPacket dp=new DatagramPacket(m_in_bytes1,m_in_bytes1.length,ip,8124);
                 ds.send(dp);
             }catch (Exception e){
                 Log.d("socket","error");
@@ -102,7 +102,5 @@ public class AudRec2 extends Thread {
         m_in_rec = null ;
         m_in_bytes = null ;
     }
-    public void logd(String s) {
-        Log.d("AudRec", s) ;
-    }
+
 }
